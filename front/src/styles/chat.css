@@ -21,25 +21,30 @@ ul {
 
 .chat-container {
   margin-top: 20px;
-  width: 320px;
+  width: 330px;
   min-height: 500px;
 }
 
 .list > .content {
   display: inline-block;
   padding: 8px 10px;
-  border-radius: 17px;
-  margin: 5px 0;
+  border-radius: 15px;
+  margin: 3px 0;
   font-size: 14px;
+  position: relative;
+}
+
+.list {
+  padding: 2px 18px;
 }
 
 .list .chat-nickname {
   color: white;
-  font-size: 11px;
+  font-size: 13px;
+  margin: 3px 0 0 5px;
 }
 
 .chat-container .my-chat {
-  padding: 7px 10px;
   text-align: right;
 }
 
@@ -48,13 +53,49 @@ ul {
   background: radial-gradient(rgb(255, 238, 0), rgb(255, 255, 255));
 }
 
-.chat-container .other-chat {
-  padding: 2px 10px;
-  text-align: left;
+.my-chat .content:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-left-color: rgb(255, 238, 0);
+  border-right: 0;
+  border-top: 0;
+  margin-top: -4px;
+  margin-right: -6px;
 }
 
 .other-chat .content {
   background-color: whitesmoke;
+}
+
+.other-chat .content:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: whitesmoke;
+  border-left: 0;
+  border-top: 0;
+  margin-top: -4px;
+  margin-left: -5px;
+}
+
+.chat-container .other-chat {
+  text-align: left;
+}
+
+.chat-time {
+  color: white;
+  font-size: 12px;
+  margin-left: 7px;
+  vertical-align: bottom;
 }
 
 .entry-container {
@@ -64,9 +105,9 @@ ul {
 }
 
 .input-container {
-  width: 320px;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin-bottom: 5px;
 }
 
@@ -74,10 +115,7 @@ ul {
   flex-grow: 1;
   margin: 3px 0 7px 8px;
   padding: 10px 0;
-  background-color: rgba(90, 90, 90, 0.766);
   color: whitesmoke;
-  text-indent: 12px;
-  border-radius: 15px;
 }
 
 ::-webkit-input-placeholder {
@@ -88,10 +126,10 @@ ul {
   outline: none;
 }
 
-.input-button {
+.input__button {
   border: 0px;
   border-radius: 20px;
-  padding: 5px 10px;
+  padding: 5px 7px;
   margin: 5px;
   font-size: 20px;
   cursor: pointer;
@@ -100,8 +138,35 @@ ul {
   line-height: 100%;
 }
 
-.input-button:hover {
+.input__button:hover {
   color: rgba(255, 255, 255, 0.5);
+}
+
+.input__select-dm {
+  background-color: black;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  text-indent: 3px;
+  font-size: 12px;
+  padding: 0 4px;
+  width: 17%;
+}
+
+.input__select-dm:focus {
+  outline: none;
+}
+
+.nickname-container > input {
+  width: 30vw;
+  height: 5vh;
+  font-size: 17px;
+}
+
+.input-basic {
+  background-color: rgba(90, 90, 90, 0.766);
+  border-radius: 20px;
+  text-indent: 15px;
 }
 
 .chat-container .notice {

@@ -43,7 +43,12 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendMsg', (res) => {
-    if (res.dm === 'all') io.emit('chat', { userId: res.userId, msg: res.msg });
+    if (res.dm === 'all')
+      io.emit('chat', {
+        userId: res.userId,
+        msg: res.msg,
+        timestamp: res.msgTimeList,
+      });
     else {
       // 나에게 보내기 : socket.emit()
       // 특정인에게 보내기 : io.to(소켓 아이디).emit()
@@ -54,8 +59,17 @@ io.on('connection', (socket) => {
         msg: res.msg,
         dm: true,
       });
-      socket.emit('chat', { userId: res.userId, msg: res.msg, dm: true });
+      socket.emit('chat', {
+        userId: res.userId,
+        msg: res.msg,
+        dm: true,
+        timestamp: res.msgTimeList,
+      });
     }
+  });
+
+  socket.on('msgTime', (res) => {
+    console.log('res', res);
   });
 });
 
