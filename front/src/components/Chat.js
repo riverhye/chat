@@ -1,6 +1,4 @@
-import ChatTime from './ChatTime';
-
-export default function Chat({ chat, i, msgTimeList }) {
+export default function Chat({ chat, i }) {
   return (
     <>
       <div key={i} className={`list ${chat.type}-chat`}>
@@ -8,6 +6,7 @@ export default function Chat({ chat, i, msgTimeList }) {
           <div className="chat-nickname">{chat.userId}</div>
         )}
         <div className="content">{chat.content}</div>
+        <div className="chat-time">{chat.timestamp}</div>
       </div>
     </>
   );

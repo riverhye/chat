@@ -14,7 +14,7 @@ export default function Chatting() {
   const [failMsg, setFailMsg] = useState('');
   const [userList, setUserList] = useState({});
   const [dmTo, setDmTo] = useState('all');
-  const [msgTimeList, setMsgTimeList] = useState([]);
+  const [timeList, setTimeList] = useState([]);
 
   const initSocketConnect = () => {
     if (!socket.connected) socket.connect();
@@ -56,11 +56,8 @@ export default function Chatting() {
     (res) => {
       const type = res.userId === userId ? 'my' : 'other';
       const content = `${res.dm ? '(속닥속닥)' : ''} ${res.msg}`;
-      const timestamp = res.timestamp;
 
       // TODO : 연속해서 같은 유저가 메시지 입력 시 닉네임 생략
-      // userList(obj)가 1개 이상일 때, chatList의 마지막 key의 value가 res.userId와 같으면
-      // isMychat = true 아니면 false
 
       const newChatList = [
         ...chatList,
@@ -68,13 +65,21 @@ export default function Chatting() {
           type: type,
           content: content,
           userId: type === 'my' ? '' : res.userId,
-          // timestamp:
+          timestamp: res.timestamp,
         },
       ];
       setChatList(newChatList);
     },
-    [userId, chatList]
+    [chatList]
   );
+
+  useEffect(() => {
+    socket.on('chat', addChatList);
+
+    return () => {
+      socket.off('chat', addChatList);
+    };
+  }, [addChatList]);
 
   // msg time 전달하기
   const getMsgTime = useMemo(() => {
@@ -87,17 +92,7 @@ export default function Chatting() {
     }${minutes}`;
 
     return msgTime;
-  }, [addChatList]);
-
-  useEffect(() => {
-    socket.on('chat', addChatList);
-    socket.emit('msgTime', getMsgTime);
-
-    return () => {
-      socket.off('chat', addChatList);
-      socket.off('msgTime', getMsgTime);
-    };
-  }, [addChatList]);
+  }, []);
 
   // notice : 입퇴장 알리기
   useEffect(() => {
@@ -114,17 +109,16 @@ export default function Chatting() {
   // sendMsg : 메시지 전송
   const sendMsg = () => {
     if (msgInput !== '') {
-      setMsgInput('');
-      const newMsgTime = [...msgTimeList, getMsgTime];
-      setMsgTimeList(newMsgTime);
       socket.emit('sendMsg', {
         userId: userId,
         msg: msgInput,
         dm: dmTo,
-        timestamp: msgTimeList,
+        // msg time을 어디서 받아오지? 지금 현재 시간 구하는 함수가 있는데
+        timestamp: getMsgTime,
       });
+      setMsgInput('');
     } else {
-      // 전송할 메시지를 입력해 주세요.
+      // send button의 동작을 막자 (UI로는 어둡게 <- hover랑 겹침 처리)
     }
   };
 
@@ -154,13 +148,7 @@ export default function Chatting() {
             <div className="chat-container">
               {chatList.map((chat, i) => {
                 if (chat.type === 'notice') return <Notice chat={chat} i={i} />;
-                else
-                  return (
-                    <Chat msgTimeList={msgTimeList} chat={chat} i={i} />
-                    // {msgTimeList.map((msgTime, i) => (
-                    //   <ChatTime msgTime={msgTime} />
-                    // ))}
-                  );
+                else return <Chat chat={chat} i={i} />;
               })}
             </div>
             <div className="input-container">

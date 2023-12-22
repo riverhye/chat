@@ -47,29 +47,19 @@ io.on('connection', (socket) => {
       io.emit('chat', {
         userId: res.userId,
         msg: res.msg,
-        timestamp: res.msgTimeList,
+        timestamp: res.timestamp,
       });
     else {
-      // 나에게 보내기 : socket.emit()
-      // 특정인에게 보내기 : io.to(소켓 아이디).emit()
-      // 모두에게 보내기 : io.emit()
-      // ----- 같은 부분 변수화하는 게 좋다 -----
-      io.to(res.dm).emit('chat', {
+      const dmChat = {
         userId: res.userId,
         msg: res.msg,
         dm: true,
-      });
-      socket.emit('chat', {
-        userId: res.userId,
-        msg: res.msg,
-        dm: true,
-        timestamp: res.msgTimeList,
-      });
-    }
-  });
+        timestamp: res.timestamp,
+      };
 
-  socket.on('msgTime', (res) => {
-    console.log('res', res);
+      io.to(res.dm).emit('chat', dmChat);
+      socket.emit('chat', dmChat);
+    }
   });
 });
 
