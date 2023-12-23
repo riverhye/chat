@@ -23,6 +23,7 @@ ul {
   margin-top: 20px;
   width: 330px;
   min-height: 500px;
+  max-height: 1200px;
 }
 
 .list > .content {
