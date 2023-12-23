@@ -17,7 +17,7 @@ export default function Header({ setDmTo, userListOptions }) {
             onClick={(e) => setDmTo(e.currentTarget.textContent)}
           >
             <span>채팅 참여자</span>
-            <div>{userListOptions}</div>
+            <div className="dm-name">{userListOptions}</div>
           </div>
         )}
       </div>

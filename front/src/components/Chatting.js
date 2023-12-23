@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
-import useToggle from '../hooks/UseToggle';
 import '../styles/chat.css';
 import Chat from './Chat';
 import Notice from './Notice';
@@ -16,7 +15,6 @@ export default function Chatting() {
   const [failMsg, setFailMsg] = useState('');
   const [userList, setUserList] = useState({});
   const [dmTo, setDmTo] = useState('all');
-  const [toggle, setToggle] = useToggle(false);
 
   const initSocketConnect = () => {
     if (!socket.connected) socket.connect();
@@ -72,6 +70,7 @@ export default function Chatting() {
         },
       ];
       setChatList(newChatList);
+      textareaRef.current.style.height = 'auto';
     },
     [chatList]
   );
@@ -84,6 +83,14 @@ export default function Chatting() {
     };
   }, [addChatList]);
 
+  // TODO : 두번째 메세지부터 textarea 자동 개행 문제
+  const textareaRef = useRef();
+
+  const resizeHeight = () => {
+    textareaRef.current.style.height = 'auto';
+    textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+  };
+
   // sendMsg : 메시지 전송
   const sendMsg = () => {
     if (msgInput !== '') {
@@ -95,8 +102,7 @@ export default function Chatting() {
         timestamp: timestamp,
       });
       setMsgInput('');
-    } else {
-      console.log('write down a message');
+      textareaRef.current.style.height = 'auto';
     }
   };
 
@@ -132,27 +138,16 @@ export default function Chatting() {
   };
 
   // Enter 누르면 button onClick과 동일
-  const handleEnter = (e) => {
-    if (e.key === 'Enter') {
-      userId ? sendMsg() : entryChat();
-    }
+  const handleMsgEnter = (e) => {
+    if (e.key === 'Enter') sendMsg();
   };
 
-  // TODO : 두번째 메세지부터 textarea 자동 개행 문제
-  const textareaRef = useRef();
-
-  const resizeHeight = () => {
-    textareaRef.current.style.height = 'auto';
-    textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+  const handleEntryEnter = (e) => {
+    if (e.key === 'Enter') entryChat();
   };
 
   return (
     <div className="wrapper-container">
-      {/* <div className="greeting">
-        {' '}
-        {userId ? `Hello, ${userId}!` : 'Chat Chat'}
-      </div> */}
-
       {userId ? (
         <>
           <div className="chat-wrapper">
@@ -169,9 +164,9 @@ export default function Chatting() {
                 <textarea
                   ref={textareaRef}
                   className="input-msg input-basic"
-                  value={msgInput}
+                  value={msgInput.replace('\n', '')}
                   placeholder="메시지를 입력하세요."
-                  onKeyDown={handleEnter}
+                  onKeyDown={handleMsgEnter}
                   onChange={(e) => {
                     setMsgInput(e.target.value);
                     resizeHeight();
@@ -201,7 +196,7 @@ export default function Chatting() {
                 placeholder="사용할 닉네임을 입력하세요."
                 value={userIdInput}
                 onChange={(e) => setUserIdInput(e.target.value)}
-                onKeyDown={handleEnter}
+                onKeyDown={handleEntryEnter}
               />
               <button className="input__button" onClick={entryChat}>
                 🖐️

@@ -7,6 +7,7 @@ export default function Chat({ chat, i }) {
         )}
         <div className="content">
           {chat.dm && (
+            // 스타일을 css로 빼야..
             <span
               style={{ color: 'tomato', fontStyle: 'italic', fontWeight: 600 }}
             >
