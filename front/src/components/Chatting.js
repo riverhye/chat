@@ -14,7 +14,6 @@ export default function Chatting() {
   const [failMsg, setFailMsg] = useState('');
   const [userList, setUserList] = useState({});
   const [dmTo, setDmTo] = useState('all');
-  const [timeList, setTimeList] = useState([]);
 
   const initSocketConnect = () => {
     if (!socket.connected) socket.connect();
@@ -54,7 +53,7 @@ export default function Chatting() {
   // chat : 새로운 채팅 내용
   const addChatList = useCallback(
     (res) => {
-      const type = res.userId === userId ? 'my' : 'other';
+      const type = res.userId === userId || !userId ? 'my' : 'other';
       const content = `${res.dm ? '(속닥속닥)' : ''} ${res.msg}`;
 
       // TODO : 연속해서 같은 유저가 메시지 입력 시 닉네임 생략
@@ -81,8 +80,24 @@ export default function Chatting() {
     };
   }, [addChatList]);
 
+  // sendMsg : 메시지 전송
+  const sendMsg = () => {
+    if (msgInput !== '') {
+      const timestamp = getMsgTime();
+      socket.emit('sendMsg', {
+        userId: userId,
+        msg: msgInput,
+        dm: dmTo,
+        timestamp: timestamp,
+      });
+      setMsgInput('');
+    } else {
+      // send button의 동작을 막자 (UI로는 어둡게 <- hover랑 겹침 처리)
+    }
+  };
+
   // msg time 전달하기
-  const getMsgTime = useMemo(() => {
+  const getMsgTime = () => {
     const currentTime = new Date();
     const hours = currentTime.getHours();
     const minutes = currentTime.getMinutes();
@@ -92,7 +107,7 @@ export default function Chatting() {
     }${minutes}`;
 
     return msgTime;
-  }, []);
+  };
 
   // notice : 입퇴장 알리기
   useEffect(() => {
@@ -105,22 +120,6 @@ export default function Chatting() {
 
     return () => socket.off('notice', notice);
   }, [chatList, userIdInput]);
-
-  // sendMsg : 메시지 전송
-  const sendMsg = () => {
-    if (msgInput !== '') {
-      socket.emit('sendMsg', {
-        userId: userId,
-        msg: msgInput,
-        dm: dmTo,
-        // msg time을 어디서 받아오지? 지금 현재 시간 구하는 함수가 있는데
-        timestamp: getMsgTime,
-      });
-      setMsgInput('');
-    } else {
-      // send button의 동작을 막자 (UI로는 어둡게 <- hover랑 겹침 처리)
-    }
-  };
 
   // entry : 닉네임 입력
   const entryChat = () => {
