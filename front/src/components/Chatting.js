@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect, useState } from 'react';
+import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import '../styles/chat.css';
 import Chat from './Chat';
 import Notice from './Notice';
@@ -92,7 +92,7 @@ export default function Chatting() {
       });
       setMsgInput('');
     } else {
-      // send button의 동작을 막자 (UI로는 어둡게 <- hover랑 겹침 처리)
+      console.log('write down a message');
     }
   };
 
@@ -134,6 +134,13 @@ export default function Chatting() {
     }
   };
 
+  const textareaRef = useRef();
+
+  const resizeHeight = () => {
+    textareaRef.current.style.height = 'auto';
+    textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+  };
+
   return (
     <div className="wrapper-container">
       <div className="greeting">
@@ -159,15 +166,23 @@ export default function Chatting() {
                 <option value="all">전체</option>
                 {userListOptions}
               </select>
-              <input
-                className="input-basic"
-                type="text"
+              <textarea
+                ref={textareaRef}
+                className="input-msg input-basic"
                 value={msgInput}
                 placeholder="메시지를 입력하세요."
                 onKeyDown={handleEnter}
-                onChange={(e) => setMsgInput(e.target.value)}
+                onChange={(e) => {
+                  setMsgInput(e.target.value);
+                  resizeHeight();
+                }}
+                rows={1}
               />
-              <button className="input__button" onClick={sendMsg}>
+              <button
+                className={`input__button ${msgInput === '' ? 'disabled' : ''}`}
+                onClick={sendMsg}
+                disabled={msgInput === ''}
+              >
                 ✉︀
               </button>
             </div>
