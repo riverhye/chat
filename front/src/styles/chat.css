@@ -9,9 +9,16 @@ ul {
 .chat-wrapper {
   background-color: black;
   border-radius: 15px;
+  display: flex;
+  position: relative;
+}
+
+.chat-user-list {
+  width: 100px;
 }
 
 .wrapper-container {
+  margin-top: 50px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -99,6 +106,25 @@ ul {
   vertical-align: bottom;
 }
 
+.chat-header {
+  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
+  height: 50px;
+  color: white;
+}
+
+.toggle-button {
+  font-size: 25px;
+  color: white;
+  cursor: pointer;
+  position: absolute;
+  text-align: center;
+  line-height: 100%;
+  top: 9px;
+  right: 13px;
+  transition: left 0.9s ease-in-out;
+}
+
 .entry-container {
   height: 400px;
   display: flex;
@@ -133,18 +159,38 @@ ul {
 }
 
 .input__select-dm {
-  background-color: black;
+  margin-left: 10px;
   border: none;
   border-radius: 20px;
-  color: white;
   text-indent: 3px;
   font-size: 12px;
   padding: 0 4px;
-  width: 17%;
+  width: 20%;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 150px;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: black;
+  padding: 20px;
 }
 
 .input__select-dm:focus {
   outline: none;
+}
+
+.input__select-dm > span {
+  font-weight: 600;
+}
+
+.chat-users {
+  margin-top: px;
+}
+
+.input__select-dm > div {
+  width: 100px;
+  text-align: left;
+  margin: 5px;
 }
 
 .nickname-container > input {
@@ -165,11 +211,10 @@ ul {
   resize: none;
   width: 60%;
   flex-grow: 1;
-  margin: 3px 0 5px 5px;
+  margin: 5px 0 5px 8px;
   padding: 5px 10px;
   display: block;
   overflow-y: hidden;
-  /* line-height: 1.5; */
 }
 
 .input-msg:focus {
@@ -186,8 +231,8 @@ ul {
 }
 
 .greeting {
-  margin: 25px 0;
-  font-size: 30px;
+  font-size: 25px;
+  line-height: 1.6;
   font-weight: 600;
   background: -webkit-radial-gradient(rgb(237, 222, 22), rgb(255, 255, 255));
   background: radial-gradient(rgb(237, 222, 22), rgb(255, 255, 255));

@@ -12,6 +12,25 @@ code {
     monospace;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+input {
+  border: 0;
+}
+
+textarea {
+  border: none;
+  outline: none;
+  resize: none;
+  overflow: hidden;
+}
+
+textarea:focus {
+  outline: none;
+}
+
 ul,
 li {
   list-style: none;
@@ -23,12 +42,4 @@ li {
 
 li {
   text-align: left;
-}
-
-input {
-  border: 0;
-}
-
-* {
-  box-sizing: border-box;
 }

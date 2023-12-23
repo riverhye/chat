@@ -29,6 +29,8 @@ io.on('connection', (socket) => {
     if (Object.values(userIdArr).includes(res.userId)) {
       socket.emit('error', { msg: '중복된 닉네임입니다.' });
     } else {
+      // TODO : 방 만들기
+      // socket.on('join', () => {})
       io.emit('notice', { msg: `${res.userId}님이 입장했습니다.` });
       socket.emit('entrySuccess', { userId: res.userId });
       userIdArr[socket.id] = res.userId;

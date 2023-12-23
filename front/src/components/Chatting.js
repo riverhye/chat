@@ -1,7 +1,9 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
+import useToggle from '../hooks/UseToggle';
 import '../styles/chat.css';
 import Chat from './Chat';
 import Notice from './Notice';
+import Header from './Header';
 import io from 'socket.io-client';
 
 const socket = io.connect('http://localhost:8000', { autoConnect: false });
@@ -14,6 +16,7 @@ export default function Chatting() {
   const [failMsg, setFailMsg] = useState('');
   const [userList, setUserList] = useState({});
   const [dmTo, setDmTo] = useState('all');
+  const [toggle, setToggle] = useToggle(false);
 
   const initSocketConnect = () => {
     if (!socket.connected) socket.connect();
@@ -38,12 +41,12 @@ export default function Chatting() {
   const userListOptions = useMemo(() => {
     const options = [];
     for (const key in userList) {
-      // 유저 본인은 목록에서 제외
-      if (userList[key] === userId) continue;
       options.push(
-        <option key={key} value={key}>
-          {userList[key]}
-        </option>
+        <div key={key}>
+          {userList[key] === userId
+            ? `(나) ${userList[key]}`
+            : `⚪ ${userList[key]}`}
+        </div>
       );
     }
 
@@ -54,17 +57,18 @@ export default function Chatting() {
   const addChatList = useCallback(
     (res) => {
       const type = res.userId === userId || !userId ? 'my' : 'other';
-      const content = `${res.dm ? '(속닥속닥)' : ''} ${res.msg}`;
 
       // TODO : 연속해서 같은 유저가 메시지 입력 시 닉네임 생략
+      // timestamp와 type이 이전과 같으면, 이전의 timestamp을 ''으로 만들고 마지막 것만 남기기
 
       const newChatList = [
         ...chatList,
         {
           type: type,
-          content: content,
+          content: res.msg,
           userId: type === 'my' ? '' : res.userId,
           timestamp: res.timestamp,
+          dm: res.dm,
         },
       ];
       setChatList(newChatList);
@@ -134,6 +138,7 @@ export default function Chatting() {
     }
   };
 
+  // TODO : 두번째 메세지부터 textarea 자동 개행 문제
   const textareaRef = useRef();
 
   const resizeHeight = () => {
@@ -143,48 +148,46 @@ export default function Chatting() {
 
   return (
     <div className="wrapper-container">
-      <div className="greeting">
+      {/* <div className="greeting">
         {' '}
         {userId ? `Hello, ${userId}!` : 'Chat Chat'}
-      </div>
+      </div> */}
 
       {userId ? (
         <>
           <div className="chat-wrapper">
-            <div className="chat-container">
-              {chatList.map((chat, i) => {
-                if (chat.type === 'notice') return <Notice chat={chat} i={i} />;
-                else return <Chat chat={chat} i={i} />;
-              })}
-            </div>
-            <div className="input-container">
-              <select
-                className="input__select-dm"
-                value={dmTo}
-                onChange={(e) => setDmTo(e.target.value)}
-              >
-                <option value="all">전체</option>
-                {userListOptions}
-              </select>
-              <textarea
-                ref={textareaRef}
-                className="input-msg input-basic"
-                value={msgInput}
-                placeholder="메시지를 입력하세요."
-                onKeyDown={handleEnter}
-                onChange={(e) => {
-                  setMsgInput(e.target.value);
-                  resizeHeight();
-                }}
-                rows={1}
-              />
-              <button
-                className={`input__button ${msgInput === '' ? 'disabled' : ''}`}
-                onClick={sendMsg}
-                disabled={msgInput === ''}
-              >
-                ✉︀
-              </button>
+            <div>
+              <Header setDmTo={setDmTo} userListOptions={userListOptions} />
+              <div className="chat-container">
+                {chatList.map((chat, i) => {
+                  if (chat.type === 'notice')
+                    return <Notice chat={chat} i={i} />;
+                  else return <Chat chat={chat} i={i} />;
+                })}
+              </div>
+              <div className="input-container">
+                <textarea
+                  ref={textareaRef}
+                  className="input-msg input-basic"
+                  value={msgInput}
+                  placeholder="메시지를 입력하세요."
+                  onKeyDown={handleEnter}
+                  onChange={(e) => {
+                    setMsgInput(e.target.value);
+                    resizeHeight();
+                  }}
+                  rows={1}
+                />
+                <button
+                  className={`input__button ${
+                    msgInput === '' ? 'disabled' : ''
+                  }`}
+                  onClick={sendMsg}
+                  disabled={msgInput === ''}
+                >
+                  ✉︀
+                </button>
+              </div>
             </div>
           </div>
         </>
