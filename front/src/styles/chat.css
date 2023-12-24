@@ -42,6 +42,12 @@ ul {
   position: relative;
 }
 
+.content > span {
+  color: 'tomato';
+  font-style: 'italic';
+  font-weight: 600;
+}
+
 .list {
   padding: 2px 18px;
 }
@@ -171,7 +177,7 @@ ul {
   left: 100%;
   width: 150px;
   background-color: rgba(255, 255, 255, 0.3);
-  color: black;
+  color: white;
   padding: 20px;
 }
 

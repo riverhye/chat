@@ -12,13 +12,13 @@ export default function Header({ setDmTo, userListOptions }) {
           &#926;
         </div>
         {toggle && (
-          <div
+          <ul
             className="input__select-dm"
             onClick={(e) => setDmTo(e.currentTarget.textContent)}
           >
             <span>채팅 참여자</span>
-            <div className="dm-name">{userListOptions}</div>
-          </div>
+            <li className="dm-name">{userListOptions}</li>
+          </ul>
         )}
       </div>
     </>

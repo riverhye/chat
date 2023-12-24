@@ -15,6 +15,7 @@ export default function Chatting() {
   const [failMsg, setFailMsg] = useState('');
   const [userList, setUserList] = useState({});
   const [dmTo, setDmTo] = useState('all');
+  const [isComposing, setIsComposing] = useState(false);
 
   const initSocketConnect = () => {
     if (!socket.connected) socket.connect();
@@ -56,9 +57,6 @@ export default function Chatting() {
     (res) => {
       const type = res.userId === userId || !userId ? 'my' : 'other';
 
-      // TODO : 연속해서 같은 유저가 메시지 입력 시 닉네임 생략
-      // timestamp와 type이 이전과 같으면, 이전의 timestamp을 ''으로 만들고 마지막 것만 남기기
-
       const newChatList = [
         ...chatList,
         {
@@ -69,8 +67,9 @@ export default function Chatting() {
           dm: res.dm,
         },
       ];
-      setChatList(newChatList);
       textareaRef.current.style.height = 'auto';
+      setMsgInput('');
+      setChatList(newChatList);
     },
     [chatList]
   );
@@ -83,7 +82,6 @@ export default function Chatting() {
     };
   }, [addChatList]);
 
-  // TODO : 두번째 메세지부터 textarea 자동 개행 문제
   const textareaRef = useRef();
 
   const resizeHeight = () => {
@@ -93,7 +91,8 @@ export default function Chatting() {
 
   // sendMsg : 메시지 전송
   const sendMsg = () => {
-    if (msgInput !== '') {
+    if (msgInput.trim() !== '') {
+      textareaRef.current.style.height = 'auto';
       const timestamp = getMsgTime();
       socket.emit('sendMsg', {
         userId: userId,
@@ -101,8 +100,6 @@ export default function Chatting() {
         dm: dmTo,
         timestamp: timestamp,
       });
-      setMsgInput('');
-      textareaRef.current.style.height = 'auto';
     }
   };
 
@@ -139,7 +136,13 @@ export default function Chatting() {
 
   // Enter 누르면 button onClick과 동일
   const handleMsgEnter = (e) => {
-    if (e.key === 'Enter') sendMsg();
+    if (isComposing) return;
+    else {
+      if (e.key === 'Enter') {
+        if (msgInput.trim() !== '') sendMsg();
+        else return;
+      }
+    }
   };
 
   const handleEntryEnter = (e) => {
@@ -164,8 +167,10 @@ export default function Chatting() {
                 <textarea
                   ref={textareaRef}
                   className="input-msg input-basic"
-                  value={msgInput.replace('\n', '')}
+                  value={msgInput}
                   placeholder="메시지를 입력하세요."
+                  onCompositionStart={() => setIsComposing(true)}
+                  onCompositionEnd={() => setIsComposing(false)}
                   onKeyDown={handleMsgEnter}
                   onChange={(e) => {
                     setMsgInput(e.target.value);
@@ -178,7 +183,7 @@ export default function Chatting() {
                     msgInput === '' ? 'disabled' : ''
                   }`}
                   onClick={sendMsg}
-                  disabled={msgInput === ''}
+                  disabled={msgInput.trim() === ''}
                 >
                   ✉︀
                 </button>
