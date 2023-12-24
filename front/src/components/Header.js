@@ -1,7 +1,7 @@
 import useToggle from '../hooks/UseToggle';
 import '../styles/chat.css';
 
-export default function Header({ userListOptions }) {
+export default function Header({ setDmTo, userListOptions }) {
   const [toggle, setToggle] = useToggle(false);
 
   return (
@@ -14,6 +14,7 @@ export default function Header({ userListOptions }) {
         {toggle && (
           <ul className="input__select-dm">
             <span>채팅 참여자</span>
+            <li onClick={() => setDmTo('all')}>전체</li>
             {userListOptions}
           </ul>
         )}

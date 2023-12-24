@@ -1,5 +1,6 @@
 body {
   background-color: rgb(50, 50, 50);
+  overflow: hidden;
 }
 
 ul {
@@ -47,6 +48,7 @@ ul {
 
 .list > .content {
   display: inline-block;
+  max-width: 200px;
   padding: 8px 10px;
   border-radius: 15px;
   margin: 3px 0;
@@ -195,6 +197,10 @@ ul {
   padding: 20px;
 }
 
+.input__select-dm li {
+  cursor: pointer;
+}
+
 .input__select-dm:focus {
   outline: none;
 }
@@ -208,16 +214,10 @@ ul {
   margin-top: px;
 }
 
-.input__select-dm > div {
-  width: 100px;
-  text-align: left;
-  margin: 5px;
-}
-
 .nickname-container > input {
   width: 30vw;
   height: 5vh;
-  font-size: 17px;
+  font-size: 15px;
   outline: none;
   text-indent: 10px;
 }
@@ -240,10 +240,6 @@ ul {
 
 .input-msg:focus {
   outline: none;
-}
-
-.dm-name {
-  cursor: pointer;
 }
 
 .chat-container .notice {
