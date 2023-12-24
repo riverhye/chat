@@ -36,21 +36,25 @@ export default function Chatting() {
     });
   }, []);
 
-  // DM을 위한 userList 작성 : 배열은 JSX에서 그대로 나열된다는 점 활용
+  const sendDmTo = useCallback(
+    (selectedUserId) => {
+      setDmTo(selectedUserId);
+    },
+    [dmTo]
+  );
+
   const userListOptions = useMemo(() => {
     const options = [];
     for (const key in userList) {
       options.push(
-        <div key={key}>
-          {userList[key] === userId
-            ? `(나) ${userList[key]}`
-            : `⚪ ${userList[key]}`}
-        </div>
+        <li className="dm-name" key={key} onClick={() => sendDmTo(key)}>
+          {userList[key] === userId ? `(나) ${userList[key]}` : userList[key]}
+        </li>
       );
     }
 
     return options;
-  }, [userList]);
+  }, [userList, userId]);
 
   // chat : 새로운 채팅 내용
   const addChatList = useCallback(

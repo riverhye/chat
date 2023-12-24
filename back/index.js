@@ -16,8 +16,6 @@ const io = require('socket.io')(server, {
 
 let userIdArr = {};
 
-// DM 하려면 채팅 접속자가 필요해서
-// 보안상 socket.id는 제외하는 게 좋지만, 편의상 한꺼번에 보냄
 const updateUserList = () => {
   io.emit('userList', userIdArr);
 };
@@ -29,8 +27,6 @@ io.on('connection', (socket) => {
     if (Object.values(userIdArr).includes(res.userId)) {
       socket.emit('error', { msg: '중복된 닉네임입니다.' });
     } else {
-      // TODO : 방 만들기
-      // socket.on('join', () => {})
       io.emit('notice', { msg: `${res.userId}님이 입장했습니다.` });
       socket.emit('entrySuccess', { userId: res.userId });
       userIdArr[socket.id] = res.userId;

@@ -1,7 +1,7 @@
 import useToggle from '../hooks/UseToggle';
 import '../styles/chat.css';
 
-export default function Header({ setDmTo, userListOptions }) {
+export default function Header({ userListOptions }) {
   const [toggle, setToggle] = useToggle(false);
 
   return (
@@ -12,12 +12,9 @@ export default function Header({ setDmTo, userListOptions }) {
           &#926;
         </div>
         {toggle && (
-          <ul
-            className="input__select-dm"
-            onClick={(e) => setDmTo(e.currentTarget.textContent)}
-          >
+          <ul className="input__select-dm">
             <span>채팅 참여자</span>
-            <li className="dm-name">{userListOptions}</li>
+            {userListOptions}
           </ul>
         )}
       </div>
