@@ -55,8 +55,9 @@ ul {
 }
 
 .content > span {
-  color: 'tomato';
-  font-style: 'italic';
+  color: tomato;
+  font-size: 12px;
+  font-style: italic;
   font-weight: 600;
 }
 
