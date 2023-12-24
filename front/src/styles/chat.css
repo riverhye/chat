@@ -69,7 +69,7 @@ ul {
 .list .chat-nickname {
   color: white;
   font-size: 13px;
-  margin: 3px 0 0 5px;
+  margin: 3px 0 2px 5px;
 }
 
 .chat-container .my-chat {
@@ -201,6 +201,7 @@ ul {
 
 .input__select-dm > span {
   font-weight: 600;
+  color: rgb(237, 222, 22);
 }
 
 .chat-users {
@@ -250,13 +251,13 @@ ul {
   font-weight: 200;
   text-align: center;
   opacity: 0.5;
-  margin-top: 7px;
+  margin: 7px 0;
   color: white;
 }
 
 .greeting {
-  font-size: 25px;
-  line-height: 1.6;
+  font-size: 22px;
+  line-height: 1.8;
   font-weight: 600;
   background: -webkit-radial-gradient(rgb(237, 222, 22), rgb(255, 255, 255));
   background: radial-gradient(rgb(237, 222, 22), rgb(255, 255, 255));

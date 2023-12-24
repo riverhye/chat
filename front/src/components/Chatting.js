@@ -48,7 +48,7 @@ export default function Chatting() {
     for (const key in userList) {
       options.push(
         <li className="dm-name" key={key} onClick={() => sendDmTo(key)}>
-          {userList[key] === userId ? `(나) ${userList[key]}` : userList[key]}
+          {userList[key] === userId ? `${userList[key]} (나)` : userList[key]}
         </li>
       );
     }

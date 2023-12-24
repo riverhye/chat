@@ -31,15 +31,19 @@ textarea:focus {
   outline: none;
 }
 
+ul {
+  margin: 15px 0;
+}
+
 ul,
 li {
   list-style: none;
   padding: 0;
-  margin: 15px 0;
   display: block;
   width: 30vw;
 }
 
 li {
   text-align: left;
+  margin: 5px 0;
 }
