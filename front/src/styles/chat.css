@@ -29,8 +29,20 @@ ul {
 .chat-container {
   margin-top: 20px;
   width: 330px;
-  min-height: 500px;
-  max-height: 1200px;
+  height: 550px;
+  overflow-y: auto;
+}
+
+.chat-container::-webkit-scrollbar {
+  background-color: black;
+  width: 7px;
+}
+.chat-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+}
+.chat-container::-webkit-scrollbar-trac {
+  margin-right: 3px;
 }
 
 .list > .content {
@@ -50,6 +62,7 @@ ul {
 
 .list {
   padding: 2px 18px;
+  margin-top: 5px;
 }
 
 .list .chat-nickname {
@@ -141,7 +154,7 @@ ul {
   width: 100%;
   display: flex;
   justify-content: space-around;
-  margin-bottom: 5px;
+  margin: 5px 0;
 }
 
 ::-webkit-input-placeholder {
@@ -218,7 +231,7 @@ ul {
   width: 60%;
   flex-grow: 1;
   margin: 5px 0 5px 8px;
-  padding: 5px 10px;
+  padding: 7px 10px;
   display: block;
   overflow-y: hidden;
 }
