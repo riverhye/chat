@@ -60,9 +60,6 @@ export default function Chatting() {
   const addChatList = useCallback(
     (res) => {
       console.log('userid', userId);
-      // userId는 첨에 null이라서 첫 입장했을 땐 무조건 흠..
-      // 처음에 와서 내가 말해 -> my : userid null
-      // 처음에 와서 남이 말해 -> other : userid null
       const type = res.userId === userId || !userId ? 'my' : 'other';
 
       const newChatList = [
@@ -215,7 +212,7 @@ export default function Chatting() {
                 🖐️
               </button>
             </div>
-            <div>{failMsg}</div>
+            <div className="annouce">{failMsg}</div>
           </div>
         </div>
       )}

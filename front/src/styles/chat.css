@@ -266,3 +266,7 @@ ul {
   flex-direction: column;
   color: rgb(237, 222, 22);
 }
+
+.annouce {
+  margin-top: 15px;
+}
