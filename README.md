@@ -39,7 +39,7 @@ useCallback, useMemo 등으로 효율화할 수 있는 상황인지 고려
 - DM, 길게 메시지 보내기, 전체에게 보내기 등 채팅
 
 
-- 시연
+## 시연
 ![채팅 화면](https://github.com/riverhye/chat/assets/77149171/f4c55cc3-4d30-4b8f-9796-29fb6e180e33)
 
 
