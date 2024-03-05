@@ -1,4 +1,4 @@
-# Chat
+# Chat Chat
 - react와 socket으로 만든 채팅 프로그램
 
 ## 개발 환경
