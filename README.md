@@ -43,5 +43,5 @@ useCallback, useMemo 등으로 효율화할 수 있는 상황인지 고려
 ![채팅 화면](https://github.com/riverhye/chat/assets/77149171/f4c55cc3-4d30-4b8f-9796-29fb6e180e33)
 
 
-## [회고록 ✍️](https://velog.io/@riverhye/chat-project)
-
+## 회고록 ✍️
+[회고록 바로가기](https://velog.io/@riverhye/chat-project)
